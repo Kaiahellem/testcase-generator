@@ -1,6 +1,7 @@
 import "dotenv/config";
 import OpenAI from "openai";
 import { readFile } from "node:fs/promises";
+import { testCaseSchema } from "./schema";
 
 const client = new OpenAI({
   baseURL: process.env.AZURE_OPENAI_BASE_URL,
@@ -17,6 +18,14 @@ const response = await client.chat.completions.create({
     { role: "system", content: systemPrompt },
     { role: "user", content: requirement },
   ],
+  response_format: {
+  type: "json_schema",
+  json_schema: {
+    name: "test_cases",
+    strict: true,
+    schema: testCaseSchema,
+  },
+},
 });
 
 console.log(response.choices[0].message.content);

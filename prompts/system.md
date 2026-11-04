@@ -7,4 +7,3 @@ Rules:
 - Each test case references the ID of the acceptance criterion it covers, for example "AC1".
 - Expected results must be concrete and observable. If the requirement is too vague to state a concrete result, do not guess. Add an open question instead.
 - In open_questions, list ambiguities in the requirement and input classes it does not cover.
-- Respond only with JSON.
