@@ -1,0 +1,20 @@
+[
+  {
+    "requirement": "requirements/login.md",
+    "acceptance_criteria": ["AC1", "AC2", "AC3"],
+    "expects_boundary_value_analysis": false,
+    "boundary_values": []
+  },
+  {
+    "requirement": "requirements/cart-quantity.md",
+    "acceptance_criteria": ["AC1", "AC2", "AC3"],
+    "expects_boundary_value_analysis": true,
+    "boundary_values": [0, 1, 10, 11]
+  },
+  {
+    "requirement": "requirements/product-search.md",
+    "acceptance_criteria": ["AC1", "AC2"],
+    "expects_boundary_value_analysis": false,
+    "boundary_values": []
+  }
+]

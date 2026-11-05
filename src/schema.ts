@@ -8,7 +8,7 @@ export const testCaseSchema = {
         properties: {
           id: { type: "string" },
           title: { type: "string" },
-          acceptance_criterion: { type: "string" },
+          acceptance_criteria: { type: "array", items: { type: "string" } },
           preconditions: { type: "string" },
           steps: { type: "array", items: { type: "string" } },
           expected_result: { type: "string" },
@@ -33,12 +33,12 @@ export const testCaseSchema = {
         required: [
           "id",
           "title",
-          "acceptance_criterion",
+          "acceptance_criteria",
           "preconditions",
           "steps",
           "expected_result",
           "technique",
-          "priority"
+          "priority",
         ],
         additionalProperties: false,
       },
