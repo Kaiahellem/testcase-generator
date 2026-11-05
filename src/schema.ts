@@ -48,3 +48,22 @@ export const testCaseSchema = {
   required: ["test_cases", "open_questions"],
   additionalProperties: false,
 };
+export type TestCase = {
+  id: string;
+  title: string;
+  acceptance_criteria: string[];
+  preconditions: string;
+  steps: string[];
+  expected_result: string;
+  technique:
+    | "equivalence_partitioning"
+    | "boundary_value_analysis"
+    | "decision_table"
+    | "state_transition";
+  priority: "high" | "medium" | "low";
+};
+
+export type GenerationResult = {
+  test_cases: TestCase[];
+  open_questions: string[];
+};

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Eval report</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    .pass { color: green; font-weight: bold; }
+    .fail { color: crimson; font-weight: bold; }
+    .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+    .meta { color: #666; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Eval report</h1>
+  <p>Generated 5.11.2026, 13:17:42</p>
+  
+    <section>
+      <h2>requirements/login.md</h2>
+      <table>
+        <tr><td>Coverage</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>No unknown ACs</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>Technique</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>Boundary values</td><td><span class="pass">3/3</span></td></tr>
+      </table>
+
+      <h3>Open questions</h3>
+      <ul>
+        <li>What is the exact text, location, and severity (inline, toast, modal) of the error messages for wrong password and for empty fields? Acceptance criteria only say 'shows an error message' or 'validation error', but tests need the expected message text or placement to be fully concrete.</li><li>How should the system behave when the email entered does not exist (unknown account)? Should that be treated the same as 'wrong password' (show a generic authentication error) or a different error? The requirement only specifies 'wrong password'.</li><li>Are whitespace-only inputs considered empty (should they trigger the empty-field validation) or trimmed before validation?</li><li>Is there any client-side vs server-side validation requirement for empty fields? Should validation occur before any server request is sent?</li><li>Are there any constraints on email format (e.g., must match a regex) that should produce a validation error distinct from 'empty'? The requirement does not define email format validation.</li><li>Are there any lockout/brute-force rules (e.g., account locked after N failed attempts) that would change the error message or behavior after multiple failed logins? The requirement does not cover repeated attempts.</li><li>What exactly identifies the 'My account' page for verification: page title/heading text, URL path, or other UI element? The acceptance criterion states 'redirects me to &quot;My account&quot;' but does not specify which observable marker to use.</li>
+      </ul>
+
+      <h3>Test cases (last run)</h3>
+      
+        <article class="card">
+          <h4>TC-LOGIN-01: Successful login with valid email and password redirects to My account</h4>
+          <p class="meta">AC1 · equivalence_partitioning · high</p>
+          <ol><li>Navigate to the login page.</li><li>Enter email: user@example.com into the email field.</li><li>Enter password: CorrectPassword123 into the password field.</li><li>Click the login/submit button.</li></ol>
+          <p><strong>Expected:</strong> The application redirects the user to the 'My account' page. The 'My account' page is visible (for example a page title or heading 'My account' is displayed) and the login page is no longer shown.</p>
+        </article>
+        <article class="card">
+          <h4>TC-LOGIN-02: Login attempt with correct email but wrong password shows an error message</h4>
+          <p class="meta">AC2 · equivalence_partitioning · high</p>
+          <ol><li>Navigate to the login page.</li><li>Enter email: user@example.com into the email field.</li><li>Enter password: WrongPassword456 into the password field.</li><li>Click the login/submit button.</li></ol>
+          <p><strong>Expected:</strong> The login attempt fails and a visible error message is shown on the login page indicating authentication failed (an error message is displayed). The user remains on the login page and is not redirected to 'My account'.</p>
+        </article>
+        <article class="card">
+          <h4>TC-LOGIN-03: Submitting login with empty email and non-empty password shows a validation error for email</h4>
+          <p class="meta">AC3 · equivalence_partitioning · high</p>
+          <ol><li>Navigate to the login page.</li><li>Leave the email field empty.</li><li>Enter a non-empty password (e.g. any string) into the password field.</li><li>Click the login/submit button.</li></ol>
+          <p><strong>Expected:</strong> A validation error is displayed for the email field indicating it is required (a visible validation error message appears near or on the email field). The user remains on the login page and no authentication is performed.</p>
+        </article>
+        <article class="card">
+          <h4>TC-LOGIN-04: Submitting login with non-empty email and empty password shows a validation error for password</h4>
+          <p class="meta">AC3 · equivalence_partitioning · high</p>
+          <ol><li>Navigate to the login page.</li><li>Enter a non-empty email (e.g. user@example.com) into the email field.</li><li>Leave the password field empty.</li><li>Click the login/submit button.</li></ol>
+          <p><strong>Expected:</strong> A validation error is displayed for the password field indicating it is required (a visible validation error message appears near or on the password field). The user remains on the login page and no authentication is performed.</p>
+        </article>
+        <article class="card">
+          <h4>TC-LOGIN-05: Submitting login with both email and password empty shows validation errors</h4>
+          <p class="meta">AC3 · equivalence_partitioning · high</p>
+          <ol><li>Navigate to the login page.</li><li>Leave both the email and password fields empty.</li><li>Click the login/submit button.</li></ol>
+          <p><strong>Expected:</strong> Validation errors are displayed for both the email and the password fields indicating they are required (visible validation messages appear for each empty field). The user remains on the login page and no authentication is performed.</p>
+        </article>
+    </section>
+    <section>
+      <h2>requirements/cart-quantity.md</h2>
+      <table>
+        <tr><td>Coverage</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>No unknown ACs</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>Technique</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>Boundary values</td><td><span class="pass">3/3</span></td></tr>
+      </table>
+
+      <h3>Open questions</h3>
+      <ul>
+        <li>What exact input methods are available to change quantity (free-text input, stepper +/- buttons, dropdown, etc.) and which UI action triggers validation/update (blur, Enter, explicit Update button)?</li><li>What is the exact error message text, placement, and accessibility requirements when a quantity outside 1–10 or a non-integer/non-numeric value is entered?</li><li>Should non-integer values be explicitly rejected as 'outside 1–10' or is there automatic rounding/truncation behavior? The requirement specifies 'whole number' but not handling behavior.</li><li>When the cart total updates, should it update immediately in the UI or only after an explicit confirmation action? Tests assume the total updates once the change action is performed.</li><li>How should currency formatting and rounding be handled for line and cart totals (number of decimal places, currency symbol placement)? Tests assume USD-style two-decimal formatting.</li><li>Are there any stock/availability constraints that could further restrict allowable quantities (for example, max quantity &lt; 10 for certain products)? The requirement does not mention stock limits.</li>
+      </ul>
+
+      <h3>Test cases (last run)</h3>
+      
+        <article class="card">
+          <h4>T1: Set quantity to a valid mid-range whole number (5) and verify cart total updates</h4>
+          <p class="meta">AC1, AC3 · equivalence_partitioning · medium</p>
+          <ol><li>Locate Product A in the cart.</li><li>Set the product quantity field to 5 using the cart UI and perform the UI's update action (e.g., press Enter, move focus away, or click any Update button if present).</li></ol>
+          <p><strong>Expected:</strong> The product's displayed quantity is updated to 5. The product line total displays $37.50 (5 × $7.50). The cart total is updated to reflect the new line total (previous cart total $15.00 → new cart total increases by $22.50 to $37.50).</p>
+        </article>
+        <article class="card">
+          <h4>T2: Set quantity to the minimum allowed boundary (1) and verify cart total updates</h4>
+          <p class="meta">AC1, AC3 · boundary_value_analysis · high</p>
+          <ol><li>Locate Product A in the cart.</li><li>Set the product quantity field to 1 using the cart UI and perform the UI's update action.</li></ol>
+          <p><strong>Expected:</strong> The product's displayed quantity is updated to 1. The product line total displays $7.50 (1 × $7.50). The cart total is updated accordingly (previous cart total $15.00 → new cart total $7.50).</p>
+        </article>
+        <article class="card">
+          <h4>T3: Set quantity to the maximum allowed boundary (10) and verify cart total updates</h4>
+          <p class="meta">AC1, AC3 · boundary_value_analysis · high</p>
+          <ol><li>Locate Product A in the cart.</li><li>Set the product quantity field to 10 using the cart UI and perform the UI's update action.</li></ol>
+          <p><strong>Expected:</strong> The product's displayed quantity is updated to 10. The product line total displays $75.00 (10 × $7.50). The cart total is updated accordingly (previous cart total $15.00 → new cart total $75.00).</p>
+        </article>
+        <article class="card">
+          <h4>T4: Attempt to set quantity to 0 (below allowed range) and verify error shown and no change to quantity or totals</h4>
+          <p class="meta">AC2, AC3 · boundary_value_analysis · high</p>
+          <ol><li>Locate Product A in the cart.</li><li>Attempt to set the product quantity field to 0 using the cart UI and perform the UI's update action.</li></ol>
+          <p><strong>Expected:</strong> An error message is displayed to the user indicating the quantity is invalid. The product's displayed quantity remains unchanged at 2. The product line total remains $15.00 and the overall cart total remains unchanged.</p>
+        </article>
+        <article class="card">
+          <h4>T5: Attempt to set quantity to 11 (above allowed range) and verify error shown and no change to quantity or totals</h4>
+          <p class="meta">AC2, AC3 · boundary_value_analysis · high</p>
+          <ol><li>Locate Product A in the cart.</li><li>Attempt to set the product quantity field to 11 using the cart UI and perform the UI's update action.</li></ol>
+          <p><strong>Expected:</strong> An error message is displayed to the user indicating the quantity is invalid. The product's displayed quantity remains unchanged at 2. The product line total remains $15.00 and the overall cart total remains unchanged.</p>
+        </article>
+        <article class="card">
+          <h4>T6: Attempt to set quantity to a non-integer decimal (2.5) and verify error shown and no change to quantity or totals</h4>
+          <p class="meta">AC2, AC3 · equivalence_partitioning · medium</p>
+          <ol><li>Locate Product A in the cart.</li><li>Attempt to set the product quantity field to 2.5 using the cart UI and perform the UI's update action.</li></ol>
+          <p><strong>Expected:</strong> An error message is displayed to the user indicating the quantity is invalid (non-whole number). The product's displayed quantity remains unchanged at 2. The product line total remains $15.00 and the overall cart total remains unchanged.</p>
+        </article>
+        <article class="card">
+          <h4>T7: Attempt to set quantity to a non-numeric value ('abc') and verify error shown and no change to quantity or totals</h4>
+          <p class="meta">AC2, AC3 · equivalence_partitioning · medium</p>
+          <ol><li>Locate Product A in the cart.</li><li>Attempt to set the product quantity field to the string 'abc' using the cart UI and perform the UI's update action.</li></ol>
+          <p><strong>Expected:</strong> An error message is displayed to the user indicating the quantity is invalid (non-numeric). The product's displayed quantity remains unchanged at 2. The product line total remains $15.00 and the overall cart total remains unchanged.</p>
+        </article>
+    </section>
+    <section>
+      <h2>requirements/product-search.md</h2>
+      <table>
+        <tr><td>Coverage</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>No unknown ACs</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>Technique</td><td><span class="pass">3/3</span></td></tr>
+        <tr><td>Boundary values</td><td><span class="pass">3/3</span></td></tr>
+      </table>
+
+      <h3>Open questions</h3>
+      <ul>
+        <li>Does the term &quot;word&quot; in AC1 require whole-word matching (token boundaries) or is substring matching acceptable? E.g., should searching for &quot;art&quot; match a product named &quot;Cartwheel&quot;?</li><li>Is the product name search case-sensitive or case-insensitive? For example, should searching for &quot;red&quot; (lowercase) match a product named &quot;Red Shirt&quot;?</li><li>Should leading/trailing whitespace in the search term be trimmed before matching, or treated as part of the search term?</li><li>How should punctuation and special characters in search terms and product names be handled (e.g., searching for &quot;C++&quot; or names containing apostrophes)?</li><li>What is the behavior for an empty search term (user submits with empty input)? The requirement does not define expected behavior.</li><li>Does the search only consider the product name field, or should other product fields (description, tags) be included? The requirement specifies name only, but confirmation is requested.</li><li>Is the exact message to display when there are no matches precisely &quot;No results found&quot; (including case and punctuation) across all UI contexts, or is that a placeholder?</li><li>Are there any locale/diacritic normalization rules (e.g., should searching for &quot;Cafe&quot; match &quot;Café&quot;)?</li>
+      </ul>
+
+      <h3>Test cases (last run)</h3>
+      
+        <article class="card">
+          <h4>TC-001: Search returns products whose name contains the searched word (single match)</h4>
+          <p class="meta">AC1 · equivalence_partitioning · high</p>
+          <ol><li>Open the product search UI.</li><li>Enter the search term: Red</li><li>Submit the search.</li></ol>
+          <p><strong>Expected:</strong> Search results include the product with name &quot;Red Shirt&quot;. At least one result row/item is displayed showing the product name &quot;Red Shirt&quot;.</p>
+        </article>
+        <article class="card">
+          <h4>TC-002: Search returns all products whose names contain the searched word (multiple matches)</h4>
+          <p class="meta">AC1 · equivalence_partitioning · high</p>
+          <ol><li>Open the product search UI.</li><li>Enter the search term: Red</li><li>Submit the search.</li></ol>
+          <p><strong>Expected:</strong> Search results include the products with names &quot;Red Shirt&quot;, &quot;Red Hat&quot;, and &quot;Blue Red Mug&quot; (all items whose name contains the word &quot;Red&quot;). Each of these product names is visible in the results list.</p>
+        </article>
+        <article class="card">
+          <h4>TC-003: Search with no matches shows the message &quot;No results found&quot;</h4>
+          <p class="meta">AC2 · equivalence_partitioning · high</p>
+          <ol><li>Open the product search UI.</li><li>Enter the search term: Unicorn</li><li>Submit the search.</li></ol>
+          <p><strong>Expected:</strong> The UI displays the message exactly: &quot;No results found&quot;. No product items are shown in the results area.</p>
+        </article>
+    </section>
+</body>
+</html>

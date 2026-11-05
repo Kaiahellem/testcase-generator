@@ -1,14 +1,14 @@
 import "dotenv/config";
 import OpenAI from "openai";
 import { readFile } from "node:fs/promises";
-import { testCaseSchema } from "./schema";
+import { testCaseSchema, type GenerationResult } from "./schema";
 
 const client = new OpenAI({
   baseURL: process.env.AZURE_OPENAI_BASE_URL,
   apiKey: process.env.AZURE_OPENAI_API_KEY,
 });
 
-export async function generateTestCases(requirementPath: string) {
+export async function generateTestCases(requirementPath: string): Promise<GenerationResult> {
   const systemPrompt = await readFile("prompts/system.md", "utf-8");
   const requirement = await readFile(requirementPath, "utf-8");
 
